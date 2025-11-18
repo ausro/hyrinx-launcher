@@ -1,0 +1,24 @@
+{
+    "ActiveProfile": 0,
+    "Profiles": {
+        "Profile_list": [
+            {
+                "Name": "",
+                "Applications": {
+                    "0": {
+                        "Name": "EMLauncher.exe",
+                        "Path": "H:/Duet Night Abyss/EMLauncher.exe",
+                        "Icon": "",
+                        "Options": []
+                    },
+                    "1": {
+                        "Name": "Duet Night Abyss",
+                        "Path": "C:/Users/Overseer/Desktop/Duet Night Abyss.lnk",
+                        "Icon": "",
+                        "Options": []
+                    }
+                }
+            }
+        ]
+    }
+}
