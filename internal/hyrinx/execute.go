@@ -23,7 +23,7 @@ func Launch(path string, opts ...string) {
 		cmd = cmdWindowsExecutable(path, opts...)
 	} else {
 		com, err := createCommand(path, opts...)
-		if err != nil {
+		if err != nil || com == nil {
 			fmt.Printf("Failed to create command: %s\n", err)
 			return
 		}
@@ -52,7 +52,7 @@ func createCommand(path string, opts ...string) ([]string, error) {
 		args = []string{path}
 	default:
 		fmt.Printf("Unsupported operating system: %s\n", runtime.GOOS)
-		return []string{}, errors.New("unsupported operating system")
+		return nil, errors.New("unsupported operating system")
 	}
 	args = append(args, opts...)
 

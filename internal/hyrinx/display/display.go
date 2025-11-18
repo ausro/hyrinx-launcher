@@ -121,9 +121,7 @@ func createWidget(app *hyrinx.Application) fyne.CanvasObject {
 	return w
 }
 
-// GetApplicationsMap returns the current applications displayed in the grid
-// as a map keyed by index. The returned map contains copies of the
-// Application values so callers can safely modify the result.
+// Get the current applications slice as a map
 func GetApplicationsMap() map[int]hyrinx.Application {
 	m := make(map[int]hyrinx.Application)
 	for i, sb := range widgets {
@@ -134,17 +132,7 @@ func GetApplicationsMap() map[int]hyrinx.Application {
 	return m
 }
 
-// GetApplicationsList returns the current applications as a slice in display order.
-func GetApplicationsList() []hyrinx.Application {
-	out := make([]hyrinx.Application, 0, len(widgets))
-	for _, sb := range widgets {
-		if sb != nil && sb.app != nil {
-			out = append(out, *sb.app)
-		}
-	}
-	return out
-}
-
+// Drag-drop handler to create an application from the dropped items
 func AcceptDropItem() func(fyne.Position, []fyne.URI) {
 	return func(p fyne.Position, u []fyne.URI) {
 		for _, v := range u {

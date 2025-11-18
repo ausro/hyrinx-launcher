@@ -12,6 +12,7 @@ func isWindowsExecutable(path string) bool {
 	return strings.HasSuffix(path, ".exe")
 }
 
+// Gets the main window of the app
 func GetRootWindow() *fyne.Window {
 	// Get first window
 	if w := fyne.CurrentApp().Driver().AllWindows(); len(w) > 0 {
