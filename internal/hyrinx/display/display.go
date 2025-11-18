@@ -22,7 +22,7 @@ func Create(grid *fyne.Container) fyne.CanvasObject {
 
 	//TESTING REMOVE BEFORE DEPLOYMENT
 	//addGridItem(hyrinx.CreateApplication("banana", "C:/Users/Overseer/AppData/Local/Programs/Anki/anki.exe", "icon.png"))
-	go AddGridItems(config.CONF.Profiles.GetCurrentProfile().Applications)
+	go AddGridItems(config.CONF.GetCurrentProfile().Applications)
 
 	return wrapper
 }
@@ -82,7 +82,7 @@ func addGridItem(app *hyrinx.Application) {
 	}
 	appGrid.Refresh()
 
-	config.CONF.Profiles.GetCurrentProfile().Update("", GetApplicationsMap())
+	config.CONF.GetCurrentProfile().Update("", GetApplicationsMap())
 }
 
 // Removes an application from the grid
@@ -101,7 +101,7 @@ func removeGridItem(w fyne.CanvasObject) {
 		}
 	}
 
-	config.CONF.Profiles.GetCurrentProfile().Update("", GetApplicationsMap())
+	config.CONF.GetCurrentProfile().Update("", GetApplicationsMap())
 }
 
 func createWidget(app *hyrinx.Application) fyne.CanvasObject {

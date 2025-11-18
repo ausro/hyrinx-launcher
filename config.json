@@ -1,11 +1,9 @@
 {
     "ActiveProfile": 0,
-    "Profiles": {
-        "Profile_list": [
-            {
-                "Name": "",
-                "Applications": {}
-            }
-        ]
-    }
+    "Profiles": [
+        {
+            "Name": "",
+            "Applications": null
+        }
+    ]
 }

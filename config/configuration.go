@@ -10,18 +10,26 @@ var CONF *Configuration
 
 type Configuration struct {
 	ActiveProfile int
-	Profiles      Profiles
+	Profiles      []Profile
 }
 
 func CreateConfiguration() *Configuration {
 	return &Configuration{
 		ActiveProfile: 0,
-		Profiles:      *createProfileList(),
+		Profiles:      make([]Profile, 1),
 	}
 }
 
 func createConfigFile() {
 	WriteConfig(CreateConfiguration())
+}
+
+func (c *Configuration) GetCurrentProfile() *Profile {
+	return &c.Profiles[0]
+}
+
+func (c *Configuration) AddProfile(pf Profile) {
+	c.Profiles = append(c.Profiles, pf)
 }
 
 func doesConfigExist() bool {

@@ -132,7 +132,7 @@ func (s *selectableBox) editDetails(name string, path string, image string) {
 	s.Refresh()
 
 	s.app.EditDetails(name, path, image)
-	config.CONF.Profiles.GetCurrentProfile().Update("", GetApplicationsMap())
+	config.CONF.GetCurrentProfile().Update("", GetApplicationsMap())
 }
 
 func setImageDetails(img *canvas.Image) {
