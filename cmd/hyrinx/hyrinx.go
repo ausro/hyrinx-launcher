@@ -24,6 +24,7 @@ func main() {
 
 	// TODO: Set based on config
 	w.Resize(fyne.NewSize(1280, 720))
+	w.SetFixedSize(false)
 
 	w.ShowAndRun()
 }
