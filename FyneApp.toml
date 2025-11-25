@@ -4,3 +4,9 @@ Name = "Hyrinx Launcher"
 ID = "com.ausro.hyrinx"
 Version = "1.0.0"
 Build = 1
+
+[LinuxAndBSD]
+  GenericName = "Application Launcher"
+  Categories = ["Utility"]
+  Comment = "Launch applications on your system"
+  Keywords = ["start"]
