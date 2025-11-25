@@ -20,9 +20,8 @@ func Create(grid *fyne.Container) fyne.CanvasObject {
 	appGrid = grid
 	wrapper := NewClickableGridWrapper(grid)
 
-	//TESTING REMOVE BEFORE DEPLOYMENT
-	//addGridItem(hyrinx.CreateApplication("banana", "C:/Users/Overseer/AppData/Local/Programs/Anki/anki.exe", "icon.png"))
-	go AddGridItems(config.CONF.GetCurrentProfile().Applications)
+	go fyne.Do(func() { AddGridItems(config.CONF.GetCurrentProfile().Applications) })
+	// AddGridItems(config.CONF.GetCurrentProfile().Applications)
 
 	return wrapper
 }
@@ -65,9 +64,19 @@ func MakeMainMenu() *fyne.MainMenu {
 	return mm
 }
 
-func AddGridItems(apps map[int]hyrinx.Application) {
+func AddGridItems(apps []hyrinx.Application) {
 	for _, v := range apps {
-		addGridItem(&v)
+		addFromConfig(&v)
+	}
+}
+
+// Adds from config, skipping write/refresh steps
+func addFromConfig(app *hyrinx.Application) {
+	w := createWidget(app)
+	appGrid.Add(w)
+	// Update list
+	if sb, ok := w.(*selectableBox); ok {
+		widgets = append(widgets, sb)
 	}
 }
 
@@ -82,7 +91,7 @@ func addGridItem(app *hyrinx.Application) {
 	}
 	appGrid.Refresh()
 
-	config.CONF.GetCurrentProfile().Update("", GetApplicationsMap())
+	config.CONF.GetCurrentProfile().Update(config.CONF.GetCurrentProfile().Name, GetApplicationsMap())
 }
 
 // Removes an application from the grid
@@ -101,7 +110,7 @@ func removeGridItem(w fyne.CanvasObject) {
 		}
 	}
 
-	config.CONF.GetCurrentProfile().Update("", GetApplicationsMap())
+	config.CONF.GetCurrentProfile().Update(config.CONF.GetCurrentProfile().Name, GetApplicationsMap())
 }
 
 func createWidget(app *hyrinx.Application) fyne.CanvasObject {
@@ -122,11 +131,11 @@ func createWidget(app *hyrinx.Application) fyne.CanvasObject {
 }
 
 // Get the current applications slice as a map
-func GetApplicationsMap() map[int]hyrinx.Application {
-	m := make(map[int]hyrinx.Application)
-	for i, sb := range widgets {
+func GetApplicationsMap() []hyrinx.Application {
+	m := []hyrinx.Application{}
+	for _, sb := range widgets {
 		if sb != nil && sb.app != nil {
-			m[i] = *sb.app
+			m = append(m, *sb.app)
 		}
 	}
 	return m

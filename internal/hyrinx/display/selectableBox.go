@@ -39,7 +39,7 @@ func NewSelectableCard(app *hyrinx.Application, icon fyne.Resource) *selectableB
 	card := &selectableBox{
 		app:                app,
 		Img:                canvas.NewImageFromResource(icon),
-		Label:              widget.NewLabel(app.Name),
+		Label:              widget.NewLabelWithStyle(app.Name, fyne.TextAlignCenter, fyne.TextStyle{}),
 		Name:               app.Name,
 		doubleClickTimeout: 300 * time.Millisecond,
 		onSelected:         nil,
@@ -50,7 +50,6 @@ func NewSelectableCard(app *hyrinx.Application, icon fyne.Resource) *selectableB
 	setImageDetails(card.Img)
 
 	// Label settings
-	card.Label.Alignment = fyne.TextAlignCenter
 	card.Label.Wrapping = fyne.TextWrapWord
 
 	// Menu
@@ -100,7 +99,6 @@ func (s *selectableBox) createMenu() *fyne.Menu {
 		}, func(details *AppDetails) {
 			s.editDetails(details.Name, details.Path, details.Image)
 			s.app.EditOptions(strings.Split(details.Opts, " "))
-			s.Refresh()
 		})
 	})
 	d := fyne.NewMenuItem("Delete", func() {
@@ -132,7 +130,7 @@ func (s *selectableBox) editDetails(name string, path string, image string) {
 	s.Refresh()
 
 	s.app.EditDetails(name, path, image)
-	config.CONF.GetCurrentProfile().Update("", GetApplicationsMap())
+	config.CONF.GetCurrentProfile().Update(config.CONF.GetCurrentProfile().Name, GetApplicationsMap())
 }
 
 func setImageDetails(img *canvas.Image) {
@@ -165,15 +163,15 @@ type selectableBoxRenderer struct {
 func (r *selectableBoxRenderer) Layout(size fyne.Size) {
 	r.bg.Resize(size)
 	r.content.Resize(size)
+	r.box.Resize(size)
 }
 
 func (r *selectableBoxRenderer) MinSize() fyne.Size {
-	return r.content.MinSize()
+	return fyne.NewSize(r.box.Size().Width, r.content.MinSize().Height)
 }
 
 func (r *selectableBoxRenderer) Refresh() {
-	r.box.Label.SetText(r.box.Name)
-	r.content.Objects[0] = r.box.Img
+	// r.content.Objects[0] = r.box.Img
 
 	if r.box.hovered {
 		r.bg.FillColor = theme.Color(theme.ColorNameHover)
@@ -187,8 +185,9 @@ func (r *selectableBoxRenderer) Refresh() {
 		r.bg.FillColor = theme.Color(theme.ColorNameSelection)
 	}
 
-	canvas.Refresh(r.bg)
-	canvas.Refresh(r.content)
+	newSize := fyne.NewSize(r.box.Size().Width, r.content.MinSize().Height)
+	r.Layout(newSize)
+	canvas.Refresh(r.box)
 }
 
 func (r *selectableBoxRenderer) Objects() []fyne.CanvasObject {

@@ -4,7 +4,6 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"github.com/ausro/hyrinx-launcher/config"
 	"github.com/ausro/hyrinx-launcher/internal/hyrinx/display"
 )
@@ -15,7 +14,7 @@ func main() {
 	config.InitConfig()
 
 	w.CenterOnScreen()
-	grid := container.New(layout.NewGridWrapLayout(fyne.NewSize(100, 100)))
+	grid := container.New(display.NewDynamicGridWrapLayout(fyne.NewSize(100, 100)))
 	gridWrapper := display.Create(grid)
 
 	w.SetContent(gridWrapper)

@@ -9,19 +9,19 @@ import (
 //   - applications: All applications added to this Profile
 type Profile struct {
 	Name         string
-	Applications map[int]hyrinx.Application
+	Applications []hyrinx.Application
 }
 
 func CreateProfile(name string) *Profile {
 	newProfile := Profile{
 		Name:         name,
-		Applications: make(map[int]hyrinx.Application),
+		Applications: []hyrinx.Application{},
 	}
 
 	return &newProfile
 }
 
-func (p *Profile) Update(name string, apps map[int]hyrinx.Application) {
+func (p *Profile) Update(name string, apps []hyrinx.Application) {
 	p.Name = name
 	p.Applications = apps
 	WriteConfig(CONF)
