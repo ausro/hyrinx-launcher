@@ -4,7 +4,9 @@ import (
 	"strings"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 	"github.com/ausro/hyrinx-launcher/config"
 	"github.com/ausro/hyrinx-launcher/internal/hyrinx"
 )
@@ -26,6 +28,13 @@ func Create(grid *fyne.Container) fyne.CanvasObject {
 	return wrapper
 }
 
+func CreateHeader() fyne.CanvasObject {
+	addButton := widget.NewButtonWithIcon("", theme.Icon(theme.IconNameContentAdd), DefaultAddAppDialog())
+	h := container.NewHBox(addButton)
+
+	return h
+}
+
 // Deselect all widgets and clear the selection tracker
 func deselectAll() {
 	if selectedWidget != nil {
@@ -44,8 +53,8 @@ func onWidgetSelected(w *selectableBox) {
 	}
 }
 
-func MakeMainMenu() *fyne.MainMenu {
-	i := fyne.NewMenuItem("New App", func() {
+func DefaultAddAppDialog() func() {
+	return func() {
 		EditAppDialog(*hyrinx.GetRootWindow(), true, &AppDetails{}, func(details *AppDetails) {
 			options := strings.Split(details.Opts, " ")
 			a := &hyrinx.Application{
@@ -57,7 +66,11 @@ func MakeMainMenu() *fyne.MainMenu {
 
 			addGridItem(a)
 		})
-	})
+	}
+}
+
+func MakeMainMenu() *fyne.MainMenu {
+	i := fyne.NewMenuItem("New App", DefaultAddAppDialog())
 	m := fyne.NewMenu("File", i)
 	mm := fyne.NewMainMenu(m)
 

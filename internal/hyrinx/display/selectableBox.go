@@ -119,6 +119,7 @@ func (s *selectableBox) editDetails(name string, path string, image string) {
 		i, err := fyne.LoadResourceFromPath(image)
 		if err != nil {
 			// Skip setting img
+			// TODO: Alert there was an issue setting img
 		} else {
 			img := canvas.NewImageFromResource(i)
 			setImageDetails(img)
@@ -171,7 +172,7 @@ func (r *selectableBoxRenderer) MinSize() fyne.Size {
 }
 
 func (r *selectableBoxRenderer) Refresh() {
-	// r.content.Objects[0] = r.box.Img
+	r.content.Objects[0] = r.box.Img
 
 	if r.box.hovered {
 		r.bg.FillColor = theme.Color(theme.ColorNameHover)
