@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
@@ -13,6 +14,7 @@ import (
 
 var appGrid *fyne.Container
 var selectedWidget *selectableBox
+var eButton *widget.Button
 var widgets []*selectableBox
 
 func CreateAppLayout() *fyne.Container {
@@ -39,15 +41,31 @@ func CreateGrid(grid *fyne.Container) fyne.CanvasObject {
 
 func CreateHeader() fyne.CanvasObject {
 	addButton := widget.NewButtonWithIcon("", theme.Icon(theme.IconNameContentAdd), DefaultAddAppDialog())
-	h := container.NewHBox(addButton)
+	editButton := widget.NewButtonWithIcon("", theme.DocumentCreateIcon(), editButtonFunc())
 
-	return h
+	// Only enabled when an item is selected
+	editButton.Disable()
+	eButton = editButton
+
+	h := container.NewHBox(addButton, editButton)
+	s := canvas.NewLine(theme.Color(theme.ColorNameButton))
+	v := container.NewVBox(h, s)
+
+	return v
+}
+
+func editButtonFunc() func() {
+	if selectedWidget != nil {
+		return selectedWidget.menu.Items[0].Action
+	}
+	return nil
 }
 
 // Deselect all widgets and clear the selection tracker
 func deselectAll() {
 	if selectedWidget != nil {
 		selectedWidget.setSelected(false)
+		eButton.Disable()
 		selectedWidget = nil
 	}
 }
@@ -59,6 +77,8 @@ func onWidgetSelected(w *selectableBox) {
 			selectedWidget.setSelected(false)
 		}
 		selectedWidget = w
+		eButton.OnTapped = editButtonFunc()
+		eButton.Enable()
 	}
 }
 
