@@ -21,6 +21,7 @@ type selectableBox struct {
 	widget.BaseWidget
 	app               *hyrinx.Application
 	Img               *canvas.Image
+	imgPath           string
 	Label             *widget.Label
 	menu              *fyne.Menu
 	Name              string
@@ -48,6 +49,7 @@ func NewSelectableCard(app *hyrinx.Application, icon fyne.Resource) *selectableB
 
 	// Image settings
 	setImageDetails(card.Img)
+	card.imgPath = app.Icon
 
 	// Label settings
 	card.Label.Wrapping = fyne.TextWrapWord
@@ -94,7 +96,7 @@ func (s *selectableBox) createMenu() *fyne.Menu {
 		EditAppDialog(*hyrinx.GetRootWindow(), true, &AppDetails{
 			Name:  s.Name,
 			Path:  s.app.Path,
-			Image: s.Img.Resource.Name(),
+			Image: s.imgPath,
 			Opts:  strings.Join(s.app.Options, " "),
 		}, func(details *AppDetails) {
 			s.editDetails(details.Name, details.Path, details.Image)
