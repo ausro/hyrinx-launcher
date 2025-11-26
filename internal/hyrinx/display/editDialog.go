@@ -91,7 +91,7 @@ func EditAppDialog(parent fyne.Window, isEdit bool, initialValues *AppDetails, o
 			imageEntry.Icon = res
 			imageEntry.Refresh()
 		}, parent)
-		f.SetFilter(storage.NewExtensionFileFilter([]string{".png", ".jpeg", ".jpg"}))
+		f.SetFilter(storage.NewExtensionFileFilter([]string{".png", ".jpeg", ".jpg", ".svg"}))
 		f.Show()
 	})
 	imageBtn.Resize(fyne.NewSize(32, 32))

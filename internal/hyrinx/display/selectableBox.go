@@ -94,7 +94,7 @@ func (s *selectableBox) createMenu() *fyne.Menu {
 		EditAppDialog(*hyrinx.GetRootWindow(), true, &AppDetails{
 			Name:  s.Name,
 			Path:  s.app.Path,
-			Image: "",
+			Image: s.Img.Resource.Name(),
 			Opts:  strings.Join(s.app.Options, " "),
 		}, func(details *AppDetails) {
 			s.editDetails(details.Name, details.Path, details.Image)
