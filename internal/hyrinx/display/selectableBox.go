@@ -136,7 +136,8 @@ func (s *selectableBox) editDetails(name string, path string, image string) {
 
 func setImageDetails(img *canvas.Image) {
 	img.FillMode = canvas.ImageFillContain
-	img.SetMinSize(fyne.NewSize(64, 64))
+	s := config.CONF.AppSize
+	img.SetMinSize(fyne.NewSize(0.64*s, 0.64*s))
 }
 
 func (b *selectableBox) MouseIn(*desktop.MouseEvent) {

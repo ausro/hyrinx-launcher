@@ -15,10 +15,19 @@ var appGrid *fyne.Container
 var selectedWidget *selectableBox
 var widgets []*selectableBox
 
+func CreateAppLayout() *fyne.Container {
+	grid := container.New(NewDynamicGridWrapLayout(fyne.NewSize(config.CONF.AppSize, config.CONF.AppSize)))
+	gridWrapper := CreateGrid(grid)
+	header := CreateHeader()
+	overall := container.NewBorder(header, nil, nil, nil, gridWrapper)
+
+	return overall
+}
+
 // Creates the core grid layout that contains all applications.
 // Returns the clickable wrapper widget to be set as window content.
 //   - grid: The fyne container to use
-func Create(grid *fyne.Container) fyne.CanvasObject {
+func CreateGrid(grid *fyne.Container) fyne.CanvasObject {
 	appGrid = grid
 	wrapper := NewClickableGridWrapper(grid)
 
@@ -71,10 +80,35 @@ func DefaultAddAppDialog() func() {
 
 func MakeMainMenu() *fyne.MainMenu {
 	i := fyne.NewMenuItem("New App", DefaultAddAppDialog())
-	m := fyne.NewMenu("File", i)
+
+	// Label is wonky when too small
+	s := fyne.NewMenuItem("Small", func() { SetAppSize(0) })
+	d := fyne.NewMenuItem("Default", func() { SetAppSize(1) })
+	l := fyne.NewMenuItem("Large", func() { SetAppSize(2) })
+
+	rm := fyne.NewMenuItem("Resize Apps", nil)
+	rm.ChildMenu = fyne.NewMenu("Size", s, d, l)
+	m := fyne.NewMenu("File", i, rm)
 	mm := fyne.NewMainMenu(m)
 
 	return mm
+}
+
+func SetAppSize(sIndex int) {
+	var size float32
+	switch sIndex {
+	case 0:
+		size = 75
+	case 1:
+		size = 100
+	case 2:
+		size = 200
+	default:
+		size = 100
+	}
+	ResizeGridItems(size)
+	config.CONF.AppSize = size
+	config.WriteConfig(config.CONF)
 }
 
 func AddGridItems(apps []hyrinx.Application) {
@@ -124,6 +158,16 @@ func removeGridItem(w fyne.CanvasObject) {
 	}
 
 	config.CONF.GetCurrentProfile().Update(config.CONF.GetCurrentProfile().Name, GetApplicationsMap())
+}
+
+func ResizeGridItems(size float32) {
+	if l, ok := appGrid.Layout.(*dynamicGridWrapLayout); ok {
+		l.CellSize = fyne.NewSize(size, size)
+	}
+
+	for _, v := range widgets {
+		v.Img.SetMinSize(fyne.NewSize(0.64*size, 0.64*size))
+	}
 }
 
 func createWidget(app *hyrinx.Application) fyne.CanvasObject {

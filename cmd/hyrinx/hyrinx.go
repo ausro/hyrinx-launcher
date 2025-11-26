@@ -3,7 +3,6 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
 	"github.com/ausro/hyrinx-launcher/config"
 	"github.com/ausro/hyrinx-launcher/internal/hyrinx/display"
 )
@@ -14,12 +13,10 @@ func main() {
 	config.InitConfig()
 
 	w.CenterOnScreen()
-	grid := container.New(display.NewDynamicGridWrapLayout(fyne.NewSize(100, 100)))
-	gridWrapper := display.Create(grid)
-	header := display.CreateHeader()
-	overall := container.NewBorder(header, nil, nil, nil, gridWrapper)
 
-	w.SetContent(overall)
+	al := display.CreateAppLayout()
+
+	w.SetContent(al)
 	w.SetMainMenu(display.MakeMainMenu())
 	w.SetOnDropped(display.AcceptDropItem())
 

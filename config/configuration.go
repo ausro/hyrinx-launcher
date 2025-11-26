@@ -10,12 +10,14 @@ var CONF *Configuration
 
 type Configuration struct {
 	ActiveProfile int
+	AppSize       float32
 	Profiles      []Profile
 }
 
 func CreateConfiguration() *Configuration {
 	return &Configuration{
 		ActiveProfile: 0,
+		AppSize:       100,
 		Profiles:      make([]Profile, 1),
 	}
 }
