@@ -47,16 +47,16 @@ jobs:
       run: go test -v ./...
 
     - name: Package windows
-      run: fyne-cross windows
-
-    - name: Package linux
-      run: fyne-cross linux
+      run: fyne-cross windows ./cmd/hyrinx
 
     - name: Upload windows artifact
       uses: actions/upload-artifact@v4
       with:
         name: windows-amd64
         path: ./fyne-cross/dist/windows-amd64/
+
+    - name: Package linux
+      run: fyne-cross linux ./cmd/hyrinx
     
     - name: Upload linux artifact
       uses: actions/upload-artifact@v4
